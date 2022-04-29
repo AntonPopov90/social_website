@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Рыболовная статистика{% endblock %}
+{% block content %}
+    <h1>Здесь представлена статистика рыбалочек</h1>
+<a href="{% url "show-statistic" %}">Ознакомиться со статистикой</a>
+<hr>
+<a href="{% url "add-statistic" %}">Составить отчет о рыбалочке</a>
+<hr>
+<a href="{% url "add_trophy" %}">Добавить трофей в галерею</a>
+<hr>
+<a href="{% url "trophy_gallery" %}">Галерея трофеев</a>
+{% endblock %}

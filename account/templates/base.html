@@ -7,10 +7,20 @@
 </head>
 <body>
 <div id="header">
-    <span class="logo">Карпфишинг</span>
+    <span class="logo"><a href="{% url "dashboard" %}">Карпфишинг</a>
+    </span>
+    <span class="users">
+         <a href="{% url "news" %}">Новости</a>
+    </span>
+    <span class="users">
+         <a href="{% url "all_users" %}">Наши рыболовы</a>
+    </span>
+    <span class="users">
+         <a href="{% url "statistic" %}">Статистика</a>
+    </span>
     <span class="user">
         {% if request.user.is_authenticated %}
-            Hello {{ request.user.first_name }},
+        {{ request.user.first_name }}
             <a href="{% url "logout" %}">Logout</a>
         {% else %}
             <a href="{% url "login" %}">Log-in</a>

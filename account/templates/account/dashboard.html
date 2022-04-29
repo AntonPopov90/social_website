@@ -1,8 +1,23 @@
 {% extends "base.html" %}
 
-{% block title %}Dashboard{% endblock %}
+{% block title %}Закрытый клуб карпятников{% endblock %}
 
 {% block content %}
-    <h1>Dashboard</h1>
-    <p>Welcome to your dashboard. You can <a href="{% url "edit" %}">edit your profile</a> or <a href="{% url "password_change" %}">change your password</a>.</p>
+    <h1>Закрытый клуб элитных карпятников</h1>
+    <p>Добро пожаловать, сперва
+        <a href="{% url "edit" %}">дополните свой профиль</a><br> или
+        <a href="{% url "register" %}">Зарегистрируйтесь</a>.
+    </p>
+<h1>Немного о нашем клубе</h1>
+<div
+<br>Всего поймано рыбы
+<h5>{{ count_fish }} кг</h5>
+<br>Выпито водки
+<h5>{{ count_vodka }} л</h5>
+<br> Карповых сессий:
+<h5>{{ count_fishing_number }}</h5>
+    <h2>Лидер сезона</h2>
+{{ max_time }}
+
+
 {% endblock %}

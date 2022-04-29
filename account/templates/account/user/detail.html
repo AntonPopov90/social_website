@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}{{ user.get_full_name }}{% endblock %}
+{% block content %}
+ <h1>{{ user.get_full_name }}</h1>
+ <div class="profile-info">
+ </div>
+ <div id="image-list" class="image-container">
+  {% for user in profiles %}
+     <img src="{{ user.photo.url }}" height="500" width="500">
+  <br>
+     <h3>Предпочитаемый вид рыбалки</h3>
+{{ user.gender }}
+  <br>
+     <h3>Специализация</h3>
+{{ user.relationship }}
+  <br>
+     <h3> Общее количество пойманной рыбы </h3>
+     {{ user.fish_sum }}
+  <br>
+     <h3>Общий вес пойманной рыбы</h3>
+     {{ user.fish_kg }}
+  <br>
+  {% endfor %}
+ </div>
+{% endblock %}

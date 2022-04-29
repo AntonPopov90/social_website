@@ -80,6 +80,11 @@ ol {
     padding-top:4px;
 }
 
+header .users {
+    float:left;
+    padding-top:4px;
+}
+
 #content {
     padding:30px 100px;
 }

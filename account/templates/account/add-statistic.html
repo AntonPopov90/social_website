@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Укажите данные о рыбалочке{% endblock %}
+
+{% block content %}
+    <h1>Заполните данные о рыбалочке</h1>
+    <form action="." method="post" enctype="multipart/form-data">
+        {{ statistic_form.as_p }}
+        {% csrf_token %}
+        <p><input type="submit" value="Сохранить отчет"></p>
+    </form>
+{% endblock %}

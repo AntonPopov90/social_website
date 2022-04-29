@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Profile
+from .models import Profile, Statistic, Trophy
 
 class UserRegistrationForm(forms.ModelForm):
     """Регистрация пользователя"""
@@ -26,7 +26,7 @@ class LoginForm(forms.Form):
 
 
 class UserEditForm(forms.ModelForm):
-    """зменение своих данных, хранящихся во встроенной пользовательской модели."""
+    """Изменение своих данных, хранящихся во встроенной пользовательской модели."""
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'email')
@@ -36,4 +36,15 @@ class ProfileEditForm(forms.ModelForm):
     """Редактирование доп.данных"""
     class Meta:
         model = Profile
-        fields = ('date_of_birth', 'photo')
+        fields = ('date_of_birth', 'photo', 'gender', 'relationship', 'fish_sum', 'fish_kg','karas','sazan','lech','other_fish')
+
+
+class StatisticForm(forms.ModelForm):
+    class Meta:
+        model = Statistic
+        fields = ('place', 'date', 'description', 'fish_name', 'fish_sum', 'fish_kg', 'vodka', 'beer', 'prikorm')
+
+class TrophyForm(forms.ModelForm):
+    class Meta:
+        model = Trophy
+        fields = ('name', 'description', 'phase')
