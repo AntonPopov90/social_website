@@ -187,7 +187,7 @@ def show_statistic(request):
     for e in stats:
         if e.fish_sum != None:
             count_fish_sum += float(e.fish_sum)
-    coefficient = count_fishing_number/count_fish_sum
+    coefficient = count_fishing_number/count_fish_sum+0.01
     return render(request,
                   'account/show-statistic.html',
                   { "stats":stats,

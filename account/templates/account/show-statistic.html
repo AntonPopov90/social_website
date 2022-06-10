@@ -9,9 +9,28 @@
 {{ count_beer }} л.
 <h2>Общее количество пойманной рыбы:</h2>
 {{ count_fish }} кг.
-<h2>Коэфициент водка/рыба составляет:</h2>
-{{ coefficient }}
-
+<style>
+table {
+    border-collapse: collapse;
+  }
+th{
+        border: 1px solid black;
+        padding: 5px;
+        color:white;
+        background:black;
+    }
+    td{
+        border: 1px black;
+        padding: 25px;
+        font-size: 50pt;
+    }
+</style>
+  </head>
+  <body>
+ <table border="1px" align="center" width="200">
+   <tr><th>Коэфициент водка/рыба</th></tr>
+   <tr><td>{{ coefficient }}</td></tr>
+ </table>
 
 <hr size="10" color="black">
 <h1>Информация о прошедших карповых сессиях:</h1>
@@ -37,9 +56,5 @@
 <br>
 <hr>
 {% endfor %}
-<h1>Общее количество выпитой водки</h1>
-{{ count_vodka }} л
-<h1>Общее количество выпитого пивка</h1>
-{{ count_beer }} л
+  </body>
 {% endblock %}
-<h1>123</h1>
