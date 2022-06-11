@@ -199,7 +199,6 @@ def show_statistic(request):
                    })
 
 
-
 def news(request):
     return HttpResponse('Трофеев нет')
 
