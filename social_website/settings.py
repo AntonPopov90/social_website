@@ -20,16 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-68x(o+7i-55@#n%=r)ht66tm8@%7j3ar&!qd(nau69aws^8^us'
-#with open(os.path.join(BASE_DIR,'secret_keys.txt')) as f:
-#    SECRET_KEY = f.read().strip()
 
-DEBUG = True
-#DEBUG = int(os.environ.get("DEBUG", default=0))
-#DEBUG = bool( os.environ.get('DJANGO_DEBUG', True) )
-#ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
-ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -44,6 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_tables2',
 ]
 
 MIDDLEWARE = [
@@ -84,29 +76,9 @@ ABSOLUTE_URL_OVERRIDES = {
  'auth.user': lambda u: reverse_lazy('user_detail', args=[u.username])
 }
 
-# Database
-# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'social_website',
-        'USER': 'postgres',
-        'PASSWORD': '123456',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.postgresql',
-#        'NAME': os.environ.get('POSTGRES_NAME'),
-#        'USER': os.environ.get('POSTGRES_USER'),
-#        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-#        'HOST': 'db',
-#        'PORT': 5432,
-#    }
-#}
+
+
 
 
 # Password validation
@@ -153,8 +125,11 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
-#SESSION_COOKIE_SECURE = True
-#CSRF_COOKIE_SECURE = True
-#SECURE_SSL_REDIRECT = True
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 THUMBNAIL_DEBUG = True
+
+try:
+    from .local_settings import *
+except ImportError:
+    from .prod_settings import *

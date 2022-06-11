@@ -1,12 +1,12 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login
-from .forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm, StatisticForm, TrophyForm
+from .forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm, StatisticForm, TrophyForm, NewsForm
 from django.contrib.auth.decorators import login_required
-from .models import Profile, Statistic, Trophy
+from .models import Profile, Statistic, Trophy, News
 from django.contrib import messages
 from django.contrib.auth.models import User
-
+from django.utils import timezone
 
 def home_page(request):
     stats = Statistic.objects.all()
@@ -194,7 +194,8 @@ def show_statistic(request):
                     "count_vodka":count_vodka,
                     "count_beer": count_beer,
                     "count_fish": count_fish,
-                    "coefficient": coefficient
+                    "coefficient": coefficient,
+                    "people":Statistic.objects.all()
                    })
 
 
@@ -205,7 +206,7 @@ def news(request):
 @login_required
 def add_trophy(request):
     if request.method == 'POST':
-        trophy_form = TrophyForm(request.POST)
+        trophy_form = TrophyForm(request.POST, request.FILES)
         if trophy_form.is_valid():
             trophy = trophy_form.save(commit=False)
             trophy.save()
@@ -224,3 +225,50 @@ def add_trophy(request):
 def trophy_gallery(request):
     gallery = Trophy.objects.all()
     return render(request, 'account/trophy_gallery.html', {'gallery': gallery})
+
+
+def post_list(request):
+    posts = News.objects.order_by('-published_date')
+    return render(request, 'account/news_list.html', {'posts': posts})
+
+
+def post_detail(request, pk):
+    post = get_object_or_404(News, pk=pk)
+    return render(request, 'account/news_detail.html', {'post': post})
+
+
+
+def post_new(request):
+    if request.method == "POST":
+        form = NewsForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.published_date = timezone.now()
+            post.save()
+            return redirect('news_detail', pk=post.pk)
+    else:
+        form = NewsForm()
+    return render(request, 'account/news_edit.html', {'form': form})
+
+
+def post_edit(request, pk):
+    post = get_object_or_404(News, pk=pk)
+    if request.method == "POST":
+        form = NewsForm(request.POST, instance=post)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.published_date = timezone.now()
+            post.save()
+            return redirect('news_detail', pk=News.pk)
+    else:
+        form = NewsForm(instance=post)
+    return render(request, 'account/news_edit.html', {'form': form})
+
+
+def map(request):
+    mapbox_access_token = 'pk.eyJ1IjoiYW50b25wb3BvdjkwIiwiYSI6ImNsNDlzemdkcTE0ajczaW1vNHJmaXl5cDcifQ.yrhKP-SuHZGn1oY0JscfRw'
+    return render(request, 'account/map.html',
+                  {'mapbox_access_token': mapbox_access_token})
+

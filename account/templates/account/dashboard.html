@@ -1,21 +1,26 @@
 {% extends "base.html" %}
-
 {% block title %}Закрытый клуб карпятников{% endblock %}
 
 {% block content %}
+<style>
+    body {
+    background-image: url(https://www.normark.ru/upload/medialibrary/3e3/Carpfishing.jpg); /* Путь к фоновому изображению */
+    background-color: #c7b39b; /* Цвет фона */
+   }
+</style>
     <h1>Закрытый клуб элитных карпятников</h1>
     <p>Добро пожаловать, сперва
         <a href="{% url "edit" %}">дополните свой профиль</a><br> или
         <a href="{% url "register" %}">Зарегистрируйтесь</a>.
     </p>
-<h1>Немного о нашем клубе</h1>
+<h1 style="color:Tomato;">Немного о нашем клубе</h1>
 <div
-<br>Всего поймано рыбы
-<h5>{{ count_fish }} кг</h5>
+<br style="color:Tomato;">Всего поймано рыбы
+<h3 style="color:Navy;">{{ count_fish }} кг</h3>
 <br>Выпито водки
-<h5>{{ count_vodka }} л</h5>
+<h3 style="color:Navy;">{{ count_vodka }} л</h3>
 <br> Карповых сессий:
-<h5>{{ count_fishing_number }}</h5>
+<h3 style="color:PaleTurquoise;">{{ count_fishing_number }}</h3>
     <h2>Лидер сезона</h2>
 {{ max_time }}
 

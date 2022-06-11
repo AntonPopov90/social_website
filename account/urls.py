@@ -1,4 +1,6 @@
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from . import views
 from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, \
     PasswordChangeDoneView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
@@ -20,11 +22,17 @@ urlpatterns = [
     path('password-reset/complete/', PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path('register/', views.register, name='register'),
     path('edit/', views.edit, name='edit'),
-    path('news/', views.news, name='news'),
+    #path('news/', views.news, name='news'),
     path('add_trophy/', views.add_trophy, name='add_trophy'),
     path('statistic/', views.statistic, name='statistic'),
     path('add-statistic/', views.add_statistic, name='add-statistic'),
     path('show-statistic/', views.show_statistic, name='show-statistic'),
     path('trophy_gallery/', views.trophy_gallery, name='trophy_gallery'),
+    path('news/', views.post_list, name='news'),
+    path('news/<int:pk>/', views.post_detail, name='news_detail'),
+    path('news/new/', views.post_new, name='news_new'),
+    path('news/<int:pk>/edit/', views.post_edit, name='news_edit'),
+    path('map/', views.map, name='map'),
 ]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 #(?P<uidb64>[-\w]+)/(?P<token>[-\w]+)
