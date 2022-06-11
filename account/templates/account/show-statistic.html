@@ -1,5 +1,6 @@
 {% extends "base.html" %}
-
+{% load render_table from django_tables2 %}
+{% load static %}
 {% block title %}Статистика по рыбалочкам{% endblock %}
 
 {% block content %}
@@ -22,39 +23,19 @@ th{
     td{
         border: 1px black;
         padding: 25px;
-        font-size: 50pt;
+        font-size: 20pt;
     }
 </style>
   </head>
   <body>
  <table border="1px" align="center" width="200">
-   <tr><th>Коэфициент водка/рыба</th></tr>
-   <tr><td>{{ coefficient }}</td></tr>
+   <tr><th>На каждую пойманную рыбу выпивается водки</th></tr>
+   <tr><td>{{ coefficient }}л.</td></tr>
  </table>
 
 <hr size="10" color="black">
 <h1>Информация о прошедших карповых сессиях:</h1>
- {% for s in stats%}
-<h5>Место</h5>
-{{ s.place }}
-<h5>Дата</h5>
-{{ s.date}}
-<h5>Описание</h5>
-{{ s.description }}
-<h5>Рыба</h5>
-{{ s.fish_name }}
-<h5>Количество рыбы</h5>
-{{ s.fish_sum }} шт
-<h5>Общий вес</h5>
-{{ s.fish_kg }} кг
-<h5>Выпито водочки</h5>
-{{ s.vodka }} л
-<h5>Распито пивка</h5>
-{{ s.beer }} л
-<h5>Использовано прикорма</h5>
-{{ s.prikorm }} кг
-<br>
-<hr>
-{% endfor %}
+  {% render_table people %}
+
   </body>
 {% endblock %}
