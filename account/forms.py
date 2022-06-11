@@ -39,6 +39,7 @@ class ProfileEditForm(forms.ModelForm):
         fields = ('date_of_birth', 'photo', 'gender', 'relationship', 'fish_sum', 'fish_kg','karas','sazan','lech','other_fish')
 
 
+
 class StatisticForm(forms.ModelForm):
     class Meta:
         model = Statistic

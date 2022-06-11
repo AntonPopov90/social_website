@@ -203,6 +203,7 @@ def show_statistic(request):
 def news(request):
     return HttpResponse('Трофеев нет')
 
+
 @login_required
 def add_trophy(request):
     if request.method == 'POST':

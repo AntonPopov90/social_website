@@ -1,0 +1,118 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css" rel="stylesheet" />
+    <style>
+      html, body, #mapContainer {
+        height: 100%;
+        margin: 0;
+      }
+
+      /* Change the cursor to a pointer on hover so the user knows it's clickable */
+      .mapboxgl-marker:hover {
+        cursor: pointer;
+      }
+
+      /* darken the marker on hover */
+      .mapboxgl-marker:hover svg > g > g:nth-child(2) {
+        fill: #7993a5;
+      }
+
+      #info-box {
+        position: absolute;
+        z-index: 10;
+        left: 7px;
+        font-family: sans-serif;
+        background: #dedede;
+        padding: 12px;
+        border-radius: 8px;
+        font-size: 2rem;
+        border: 1px solid #969696;
+        bottom: 34px;
+      }
+
+    </style>
+  </head>
+
+  <body>
+
+    <div id="mapContainer"></div>
+    <div id="info-box"></div>
+
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
+    <script>
+
+    mapboxgl.accessToken = 'pk.eyJ1IjoiYW50b25wb3BvdjkwIiwiYSI6ImNsNDlzemdkcTE0ajczaW1vNHJmaXl5cDcifQ.yrhKP-SuHZGn1oY0JscfRw';
+
+    const map = new mapboxgl.Map({
+      container: 'mapContainer',
+      style: 'mapbox://styles/mapbox/outdoors-v11',
+      center: [49.388, 55.314],
+      zoom: 3.05,
+      pitch: 36,
+      hash: true,
+    });
+
+    // Add zoom and rotation controls to the map.
+    map.addControl(new mapboxgl.NavigationControl());
+
+    // extend mapboxGL Marker so we can pass in an onClick handler
+    class ClickableMarker extends mapboxgl.Marker {
+      // new method onClick, sets _handleClick to a function you pass in
+      onClick(handleClick) {
+        this._handleClick = handleClick;
+        return this;
+      }
+
+      // the existing _onMapClick was there to trigger a popup
+      // but we are hijacking it to run a function we define
+      _onMapClick(e) {
+        const targetElement = e.originalEvent.target;
+        const element = this._element;
+
+        if (this._handleClick && (targetElement === element || element.contains((targetElement)))) {
+          this._handleClick();
+        }
+      }
+    };
+
+    const cities = [
+      {
+        name: 'Здесь сазана поймали',
+        coordinates: [49.388, 55.3148  ],
+      },
+      {
+        name: 'База альпинизма',
+        coordinates: [ 49.341,55.431  ],
+      },
+      {
+        name: 'Здесь утопили фидеры',
+        coordinates: [ 49.616, 55.393 ],
+      },
+      {
+        name: 'Здесь глубина,даже корабли причаливают',
+        coordinates: [ 48.988,55.730 ],
+      },
+      {
+        name: 'Король под горой',
+        coordinates: [ 49.343, 55.470 ],
+      },
+      {
+        name: 'Здесь задавили деда',
+        coordinates: [ 49.3443, 55.4431],
+      },
+    ];
+
+    cities.forEach((city) => {
+      new ClickableMarker()
+        .setLngLat(city.coordinates)
+        .onClick(() => { // onClick() is a thing now!
+          document.getElementById('info-box')
+            .innerHTML = `${city.name}!`;
+        })
+        .addTo(map);
+    });
+
+    </script>
+  </body>
+</html>

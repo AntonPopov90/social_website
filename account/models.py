@@ -64,6 +64,7 @@ class Statistic(models.Model):
     prikorm = models.FloatField(verbose_name='Количество прикорма,кг', blank=True, null=True,default=0)
 
 
+
 class Trophy(models.Model):
     name = models.CharField(max_length=100, verbose_name='Место ловли', blank=True, null=True)
     description = models.CharField(max_length=500, verbose_name='Описание', blank=True, null=True)

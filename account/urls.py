@@ -6,6 +6,7 @@ from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView,
     PasswordChangeDoneView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 
 
+
 urlpatterns = [
     # path('login/', views.user_login, name='login'),
     path('', views.home_page, name='dashboard'),
