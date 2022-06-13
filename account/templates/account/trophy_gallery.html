@@ -1,9 +1,8 @@
 {% extends "base.html" %}
 {% block title %}Рыболовы{% endblock %}
 {% block content %}
- <h1>Галерея в стадии разработки</h1>
+ <h1>Галерея трофеев</h1>
 {% for g in gallery %}
 <img src="{{ g.phase.url }}" height="500" width="500">
 {% endfor %}
 {% endblock %}
-

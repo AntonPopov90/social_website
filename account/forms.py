@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Profile, Statistic, Trophy, News
+from .models import Profile, Statistic, Trophy
 
 class UserRegistrationForm(forms.ModelForm):
     """Регистрация пользователя"""
@@ -50,8 +50,12 @@ class TrophyForm(forms.ModelForm):
         fields = ('name', 'description', 'phase')
 
 
-class NewsForm(forms.ModelForm):
+class CommentForm(forms.Form):
+    your_name = forms.CharField(max_length=20)
+    comment_text = forms.CharField(widget=forms.Textarea)
 
-    class Meta:
-        model = News
-        fields = ('title', 'text',)
+    def __str__(self):
+        return f"{self.comment_text} by {self.your_name}"
+
+class SearchForm(forms.Form):
+    title = forms.CharField(max_length=20)

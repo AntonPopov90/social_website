@@ -4,8 +4,11 @@
 {% block content %}
 <style>
     body {
-    background-image: url(https://www.normark.ru/upload/medialibrary/3e3/Carpfishing.jpg); /* Путь к фоновому изображению */
-    background-color: #c7b39b; /* Цвет фона */
+    background-image: url(https://www.normark.ru/upload/medialibrary/3e3/Carpfishing.jpg);
+    -moz-background-size: 100%; /* Firefox 3.6+ */
+    -webkit-background-size: 100%; /* Safari 3.1+ и Chrome 4.0+ */
+    -o-background-size: 100%; /* Opera 9.6+ */
+    background-size: 100%; /* Современные браузеры */
    }
 </style>
     <h1>Закрытый клуб элитных карпятников</h1>

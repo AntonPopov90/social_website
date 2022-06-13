@@ -1,12 +1,12 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login
-from .forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm, StatisticForm, TrophyForm, NewsForm
+from .forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm, StatisticForm, TrophyForm, SearchForm, CommentForm
 from django.contrib.auth.decorators import login_required
-from .models import Profile, Statistic, Trophy, News
-from django.contrib import messages
+from .models import Profile, Statistic, Trophy, BlogModel, CommentModel
 from django.contrib.auth.models import User
-from django.utils import timezone
+from django.contrib import messages
+
 
 def home_page(request):
     stats = Statistic.objects.all()
@@ -187,7 +187,7 @@ def show_statistic(request):
     for e in stats:
         if e.fish_sum != None:
             count_fish_sum += float(e.fish_sum)
-    coefficient = count_fishing_number/count_fish_sum+0.01
+    coefficient = count_fishing_number/(count_fish+0.01)
     return render(request,
                   'account/show-statistic.html',
                   { "stats":stats,
@@ -227,48 +227,50 @@ def trophy_gallery(request):
     return render(request, 'account/trophy_gallery.html', {'gallery': gallery})
 
 
-def post_list(request):
-    posts = News.objects.order_by('-published_date')
-    return render(request, 'account/news_list.html', {'posts': posts})
-
-
-def post_detail(request, pk):
-    post = get_object_or_404(News, pk=pk)
-    return render(request, 'account/news_detail.html', {'post': post})
-
-
-
-def post_new(request):
-    if request.method == "POST":
-        form = NewsForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.published_date = timezone.now()
-            post.save()
-            return redirect('news_detail', pk=post.pk)
-    else:
-        form = NewsForm()
-    return render(request, 'account/news_edit.html', {'form': form})
-
-
-def post_edit(request, pk):
-    post = get_object_or_404(News, pk=pk)
-    if request.method == "POST":
-        form = NewsForm(request.POST, instance=post)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.published_date = timezone.now()
-            post.save()
-            return redirect('news_detail', pk=News.pk)
-    else:
-        form = NewsForm(instance=post)
-    return render(request, 'account/news_edit.html', {'form': form})
-
-
 def map(request):
     mapbox_access_token = 'pk.eyJ1IjoiYW50b25wb3BvdjkwIiwiYSI6ImNsNDlzemdkcTE0ajczaW1vNHJmaXl5cDcifQ.yrhKP-SuHZGn1oY0JscfRw'
     return render(request, 'account/map.html',
                   {'mapbox_access_token': mapbox_access_token})
 
+
+def BlogListView(request):
+    dataset = BlogModel.objects.all()
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data['title']
+            blog = BlogModel.objects.get(blog_title=title)
+            return redirect(f'/blog/{blog.id}')
+    else:
+        form = SearchForm()
+        context = {
+            'dataset': dataset,
+            'form': form,
+        }
+    return render(request, 'account/listview.html', context)
+
+
+def BlogDetailView(request, _id):
+    try:
+        data = BlogModel.objects.get(id=_id)
+        comments = CommentModel.objects.filter(blog=data)
+    except BlogModel.DoesNotExist:
+        raise Http404('Data does not exist')
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            Comment = CommentModel(your_name=form.cleaned_data['your_name'],
+                                   comment_text=form.cleaned_data['comment_text'],
+                                   blog=data)
+            Comment.save()
+            return redirect(f'/blog/{_id}')
+    else:
+        form = CommentForm()
+
+    context = {
+        'data': data,
+        'form': form,
+        'comments': comments,
+    }
+    return render(request, 'account/detailview.html', context)

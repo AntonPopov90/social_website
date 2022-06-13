@@ -5,6 +5,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 
+
 GENDER_CHOICES = [
     ['Берег', u"Берег"],
     ['Лодка', u"Лодка"],
@@ -67,19 +68,21 @@ class Statistic(models.Model):
 class Trophy(models.Model):
     name = models.CharField(max_length=100, verbose_name='Место ловли', blank=True, null=True)
     description = models.CharField(max_length=500, verbose_name='Описание', blank=True, null=True)
-    phase = models.FileField(upload_to='media/trophy',blank=False,null=False, default='/media/karp.jpg')
+    phase = models.ImageField(upload_to='media/trophy',blank=False,null=False, default='/media/karp.jpg')
 
 
-class News(models.Model):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    title = models.CharField(max_length=200,verbose_name='Заголовок')
-    text = models.TextField(verbose_name='Описание')
-    created_date = models.DateTimeField(default=timezone.now)
-    published_date = models.DateTimeField(blank=True, null=True)
-
-    def publish(self):
-        self.published_date = timezone.now()
-        self.save()
+class BlogModel(models.Model):
+    id = models.IntegerField(primary_key=True)
+    blog_title = models.CharField(max_length=20)
+    blog = models.TextField()
 
     def __str__(self):
-        return self.title
+        return f"Blog: {self.blog_title}"
+
+
+class CommentModel(models.Model):
+    your_name = models.CharField(max_length=20,verbose_name='ваше имя')
+    comment_text = models.TextField(verbose_name='комментарий')
+    blog = models.ForeignKey('BlogModel', on_delete=models.CASCADE)
+    def __str__(self):
+        return f"Comment by Name: {self.your_name}"
